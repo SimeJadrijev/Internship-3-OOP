@@ -10,9 +10,36 @@ namespace Internship_3_OOP
     {
         static void Main(string[] args)
         {
-            Menu();
+            Dictionary<Contact, List<Call>> dictionary = new Dictionary<Contact, List<Call>>() { };
+
+            int? actionChoice = Menu();
+            if (actionChoice != null)
+            {
+                switch (actionChoice)
+                {
+                    case 1:
+                        if (dictionary.Count != 0)
+                        {
+                            PrintAllContacts(dictionary);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Lista je prazna!");
+                        }
+                       
+                        break;
+                }
+            }
             Console.ReadKey();
         }
+        static void PrintAllContacts(Dictionary<Contact, List<Call>> dictionary)
+        {
+            foreach(var contact in dictionary.Keys)
+            {
+                Console.WriteLine(contact);
+            }
+        }
+        
         static int? Menu()
         {
             Console.WriteLine("- MENU - \n\n" +

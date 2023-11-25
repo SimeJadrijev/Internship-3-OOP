@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace Internship_3_OOP
 {
-    internal class Kontakt
+    public class Contact
     {
+        public Contact()
+        {
+
+        }
+        public string NameAndSurname { get; set; }
+        public int phoneNumber { get; set; }
+        
+        public enum Preference
+        {
+            favorit,
+            normalan,
+            blokiran
+        }
     }
 }
