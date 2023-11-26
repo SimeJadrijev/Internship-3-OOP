@@ -12,12 +12,20 @@ namespace Internship_3_OOP
         {
                 
         }
+        public Call(DateTime callStart, string callStatus)
+        {
+            CallStart = callStart;
+            CallStatus = callStatus;
+        }
         public DateTime CallStart { get; set; }
+        public string CallStatus { get; set; }
+        /*
         public enum CallStatus
         {
             u_tijeku,
             propusten,
             zavrsen
         }
+        */
     }
 }

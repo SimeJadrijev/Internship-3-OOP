@@ -102,17 +102,146 @@ namespace Internship_3_OOP
                                     }
                                 }
                                 break;
+                            case 2:
+                                while (true)
+                                {
+                                    NewCall(dictionary);
+                                    if (BackToMenu() == 0)
+                                    {
+                                        Console.Clear();
+                                        actionChoice = Menu();
+                                        break;
+                                    }
+                                }
+                                break;
+                            case 3:
+                                Console.Clear();
+                                actionChoice = Menu();
+                                break;
                         }
                         break;
-                        /*
+                    case 6:
+                        while (true)
+                        {
+                            PrintAllCalls(dictionary);
+                            if (BackToMenu() == 0)
+                            {
+                                Console.Clear();
+                                actionChoice = Menu();
+                                break;
+                            }
+                        }
+                        break;
+                        break;
+                        
                         case 7:
-                            Environment.Exit(0);    //Odkomentirati kasnije
+                            Environment.Exit(0);    
                             break;
-                        */
+                        
                 }
             }
 
             Console.ReadKey();
+        }
+
+        static void PrintAllCalls(Dictionary<Contact, List<Call>> dictionary)
+        {
+            Console.WriteLine();
+
+            foreach (var contact in dictionary)
+            {
+                Console.WriteLine("Ispis poziva za kontakt: " + contact.Key.NameAndSurname);
+                foreach (var call in contact.Value)
+                {
+                    Console.WriteLine($"Uspostava poziva: {call.CallStart} \nStatus poziva: {call.CallStatus}");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void NewCall(Dictionary<Contact, List<Call>> dictionary)
+        {
+            var breakWhileLoop = false;
+
+            while (true)
+            {
+                Console.Write("Unesite ime i prezime kontakta kojem želite poslati poziv: ");
+                var contactName = Console.ReadLine();
+
+                var contactIsFound = false;
+                var contactPreference = "temporary value";
+                Contact requestedContact = null;             
+
+                foreach (var contact in dictionary.Keys)
+                {
+                    if (contact.NameAndSurname == contactName)
+                    {
+                        requestedContact = contact;
+                        contactIsFound = true;
+                        contactPreference = contact.Preference;
+                        break;
+                    }
+                }
+
+                if (!contactIsFound)
+                {
+                    Console.WriteLine("Kontakt nije pronađen!");
+                }
+                else
+                {
+                    bool isInCall = false;
+
+                    foreach (var calls in dictionary.Values)
+                    {
+                        if (calls != null)
+                        {
+                            foreach (var call in calls)
+                            {
+                                if (call.CallStatus == "u_tijeku")
+                                {
+                                    Console.WriteLine("Kontakt je već u pozivu!");
+                                    isInCall = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (isInCall)
+                        break;
+                    else if (contactPreference == "blokiran")
+                    {
+                        Console.WriteLine("Ne možete uputiti poziv jer ste blokirali kontakt!");
+                        break;
+                    }
+                    else
+                    {
+                        string[] callStatusOptions = new[] { "u tijeku", "propusten", "zavrsen" };
+
+                        Random rnd = new Random();
+                        var randomNumber = rnd.Next(0, 3);
+                        System.Threading.Thread.Sleep(100); 
+
+                        var randomCallStatus = callStatusOptions[randomNumber];
+                        var randomCallDuration = rnd.Next(1, 21);
+
+                        Call newCall = new Call(DateTime.Now, randomCallStatus);
+
+                        dictionary[requestedContact].Add(newCall);
+                        Console.WriteLine("Poziv je uspješno upućen!");
+
+                        breakWhileLoop = true;
+
+                    }
+
+                    if (breakWhileLoop)
+                    {
+                        break;
+                    }
+                }
+
+                
+            }
         }
 
         static void PrintAllCallsWithCertainContact(Dictionary<Contact, List<Call>> dictionary)
@@ -143,7 +272,7 @@ namespace Internship_3_OOP
                     var callsForThisContact = dictionary[requestedContact];
                     foreach (var item in callsForThisContact)
                     {
-                        Console.WriteLine(item);
+                        Console.WriteLine($"Upostava poziva: {item.CallStart} \nStatus poziva: {item.CallStatus}");
                     }
                     break;
                 }
@@ -306,7 +435,7 @@ namespace Internship_3_OOP
             }
             if (!doesContactAlreadyExist)
             {
-                dictionary.Add(newContact, null);
+                dictionary.Add(newContact, new List<Call>());
                 Console.WriteLine($"Uspješno ste dodali novi kontakt ({nameAndSurname})");
             }
 
