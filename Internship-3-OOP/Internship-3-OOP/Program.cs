@@ -11,7 +11,14 @@ namespace Internship_3_OOP
     {
         static void Main(string[] args)
         {
-            Dictionary<Contact, List<Call>> dictionary = new Dictionary<Contact, List<Call>>() { };
+            Contact firstContact = new Contact("Marko Livaja", "095123456", "favorit");
+
+            Call firstCall = new Call();
+            List<Call> firstCallsList = new List<Call>();
+
+            Dictionary<Contact, List<Call>> dictionary = new Dictionary<Contact, List<Call>>();
+
+            dictionary.Add(firstContact, firstCallsList);
 
             int? actionChoice = Menu();
             while (actionChoice != null )
@@ -66,17 +73,147 @@ namespace Internship_3_OOP
                         }
                         break;
 
-                    /*
-                    case 7:
-                        Environment.Exit(0);    //Odkomentirati kasnije
+                    case 4:
+                        while (true)
+                        {
+                            EditPreference(dictionary);
+                            if (BackToMenu() == 0)
+                            {
+                                Console.Clear();
+                                actionChoice = Menu();
+                                break;
+                            }
+                        }
                         break;
-                    */
+
+                    case 5:
+                        var submenuChoice = Submenu();
+                        switch (submenuChoice)
+                        {
+                            case 1:
+                                while (true)
+                                {
+                                    PrintAllCallsWithCertainContact(dictionary);
+                                    if (BackToMenu() == 0)
+                                    {
+                                        Console.Clear();
+                                        actionChoice = Menu();
+                                        break;
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                        /*
+                        case 7:
+                            Environment.Exit(0);    //Odkomentirati kasnije
+                            break;
+                        */
                 }
             }
 
             Console.ReadKey();
         }
-        
+
+        static void PrintAllCallsWithCertainContact(Dictionary<Contact, List<Call>> dictionary)
+        {
+            Console.WriteLine();
+
+
+            while (true)
+            {
+                Console.Write("Unesite ime i prezime kontakta kojim želite upravljati: ");
+                var contactName = Console.ReadLine();
+
+                var contactIsFound = false;
+                Contact requestedContact = null;
+
+                foreach (var contact in dictionary.Keys)
+                {
+                    if (contact.NameAndSurname == contactName)
+                    {
+                        requestedContact = contact;
+                        contactIsFound = true;
+                        break;
+                    }
+                }
+
+                if (contactIsFound)
+                {
+                    var callsForThisContact = dictionary[requestedContact];
+                    foreach (var item in callsForThisContact)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    break;
+                }
+                else
+                    Console.WriteLine("Kontakt nije pronađen!");
+            }
+
+
+        }
+
+        static int? Submenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("- SUBMENU - \n\n" +
+                            " 1 - Ispis svih poziva s određenim kontaktom \n" +
+                            " 2 - Kreiranje novog poziva \n" +
+                            " 3 - Izlaz");
+            int? actionChoice;
+            do
+            {
+                Console.Write("Odaberite jednu od ponuđenih opcija: ");
+                actionChoice = IntInput(Console.ReadLine());
+            } while (actionChoice == null || actionChoice < 1 || actionChoice > 3);
+
+            return actionChoice;
+
+        }
+
+        static void EditPreference(Dictionary<Contact, List<Call>> dictionary)
+        {
+            Console.WriteLine();
+
+            while (true)
+            {
+                Console.Write("Unesite ime i prezime kontakta kojemu želite promijeniti preferencu: ");
+                var contactName = Console.ReadLine();
+                Contact contactForEditing = null;
+
+                foreach (var contact in dictionary.Keys)
+                {
+                    if (contact.NameAndSurname == contactName)
+                    {
+                        contactForEditing = contact;
+                        break;
+                    }
+                }
+
+                if (contactForEditing != null)
+                {
+                    var contactIsEdited = false;
+                    Console.WriteLine($"Trenutna preferenca za kontakt {contactForEditing.NameAndSurname} je '{contactForEditing.Preference}'");
+                    while (true)
+                    {
+                        Console.Write("Unesite novu preferencu (favorit / normalan / blokiran): ");
+                        var newPreference = Console.ReadLine();
+                        if (newPreference == "favorit" || newPreference == "normalan" || newPreference == "blokiran")
+                        {
+                            contactForEditing.Preference = newPreference;
+                            contactIsEdited = true;
+                            Console.WriteLine($"Uspješno ste dodali novu preferencu '{newPreference}' kontaktu '{contactName}'");
+                            break;
+                        }else
+                            Console.WriteLine("Unesite jednu od ponuđenih opcija! \n");
+                    }
+                    if (contactIsEdited)
+                        break;
+                }
+                Console.WriteLine("Ne postoji taj kontakt!");
+            }
+        }
         static void DeleteContact(Dictionary<Contact, List<Call>> dictionary)
         {
             Console.WriteLine();
@@ -191,7 +328,7 @@ namespace Internship_3_OOP
                                 " 2 - Dodavanje novih kontakata u imenik \n" +
                                 " 3 - Brisanje kontakata iz imenika \n" +
                                 " 4 - Editiranje pereference kontakata \n" +
-                                " 5 - Upravljanje kontaktom koje otvara podmenu \n" +
+                                " 5 - Upravljanje kontaktom \n" +
                                 " 6 - Ispis svih poziva \n" +
                                 " 7 - Izlaz iz aplikacije \n" );
 
