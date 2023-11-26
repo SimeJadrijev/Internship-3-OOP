@@ -10,16 +10,25 @@ namespace Internship_3_OOP
     {
         public Contact()
         {
-
+        }
+        public Contact(string nameAndSurname, string phoneNumber, string preference)
+        {
+            NameAndSurname = nameAndSurname;
+            PhoneNumber = phoneNumber;
+            Preference = preference;
         }
         public string NameAndSurname { get; set; }
-        public int phoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Preference { get; set; }
+        /*
+        public Preference ContactPreference { get; set; }
         
-        public enum Preference
+        public enum  Preference
         {
             favorit,
             normalan,
             blokiran
         }
+        */
     }
 }

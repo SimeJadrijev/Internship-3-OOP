@@ -28,15 +28,55 @@ namespace Internship_3_OOP
                         }
                        
                         break;
+                    case 2:
+                        AddNewContact(dictionary);
+                        break;
                 }
             }
+
             Console.ReadKey();
+        }
+
+        static void AddNewContact(Dictionary<Contact, List<Call>> dictionary)
+        {
+            string nameAndSurname = null, preference = null;
+            string phoneNumber = null;
+            
+            while (string.IsNullOrWhiteSpace(nameAndSurname))
+            {
+                Console.Write("Unesite ime i prezime kontakta: ");
+                nameAndSurname = Console.ReadLine();
+            }
+
+            while (true)
+            {
+                Console.Write("Unesite broj mobitela (9-10 znamenki bez ikakvih drugih znakova): ");
+                phoneNumber = Console.ReadLine();
+                var checkIfPhoneNumberIsNumber = IntInput(phoneNumber);
+                if (checkIfPhoneNumberIsNumber != null && phoneNumber.Length >= 9 && phoneNumber.Length <= 10)
+                    break;
+                    
+            }
+
+            while (true)
+            {
+                Console.Write("Unesite preferencu kontakta (favorit / normalan / blokiran): ");
+                preference = Console.ReadLine();
+                if (preference == "favorit" || preference == "normalan" || preference == "blokiran")
+                    break;
+            }
+
+            Contact newContact = new Contact(nameAndSurname, phoneNumber, preference);
+            dictionary.Add(newContact, null);
+            Console.WriteLine($"Uspješno ste dodali novi kontakt ({nameAndSurname})");
+
+
         }
         static void PrintAllContacts(Dictionary<Contact, List<Call>> dictionary)
         {
             foreach(var contact in dictionary.Keys)
             {
-                Console.WriteLine(contact);
+                Console.WriteLine($"{contact.NameAndSurname} - {contact.PhoneNumber} - {contact.Preference}");
             }
         }
         
