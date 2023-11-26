@@ -76,6 +76,7 @@ namespace Internship_3_OOP
 
             Console.ReadKey();
         }
+        
         static void DeleteContact(Dictionary<Contact, List<Call>> dictionary)
         {
             Console.WriteLine();
@@ -156,8 +157,22 @@ namespace Internship_3_OOP
             }
 
             Contact newContact = new Contact(nameAndSurname, phoneNumber, preference);
-            dictionary.Add(newContact, null);
-            Console.WriteLine($"Uspješno ste dodali novi kontakt ({nameAndSurname})");
+            var doesContactAlreadyExist = false;
+            foreach (var contact in dictionary.Keys)
+            {
+                if (contact.PhoneNumber == phoneNumber)
+                {
+                    Console.WriteLine("U imeniku već postoji kontakt s istim brojem mobitela!");
+                    doesContactAlreadyExist = true;
+                    break;
+                }
+            }
+            if (!doesContactAlreadyExist)
+            {
+                dictionary.Add(newContact, null);
+                Console.WriteLine($"Uspješno ste dodali novi kontakt ({nameAndSurname})");
+            }
+
 
 
         }
