@@ -13,29 +13,67 @@ namespace Internship_3_OOP
             Dictionary<Contact, List<Call>> dictionary = new Dictionary<Contact, List<Call>>() { };
 
             int? actionChoice = Menu();
-            if (actionChoice != null)
+            while (actionChoice != null )
             {
                 switch (actionChoice)
                 {
                     case 1:
-                        if (dictionary.Count != 0)
+                        
+                        while (true)
                         {
-                            PrintAllContacts(dictionary);
+                            if (dictionary.Count != 0)
+                                PrintAllContacts(dictionary);
+                            else
+                                Console.WriteLine("Lista je prazna!");
+
+                            if (BackToMenu() == 0)
+                            {
+                                Console.Clear();
+                                actionChoice = Menu();
+                                break;
+                            }
+
                         }
-                        else
-                        {
-                            Console.WriteLine("Lista je prazna!");
-                        }
-                       
+
                         break;
+
                     case 2:
-                        AddNewContact(dictionary);
+                        while (true)
+                        {
+                            AddNewContact(dictionary);
+
+                            if (BackToMenu() == 0)
+                            {
+                                Console.Clear();
+                                actionChoice = Menu();
+                                break;
+                            }
+                        }
+                        
                         break;
+                    /*
+                    case 7:
+                        Environment.Exit(0);    //Odkomentirati kasnije
+                        break;
+                    */
                 }
             }
 
             Console.ReadKey();
         }
+
+        static int BackToMenu()
+        {
+            Console.Write("Za povratak na početni Menu unesite '0': ");
+            string input = Console.ReadLine();
+
+            if (input == "0")
+                return 0;
+            else
+                return 1;
+
+        }
+
 
         static void AddNewContact(Dictionary<Contact, List<Call>> dictionary)
         {
