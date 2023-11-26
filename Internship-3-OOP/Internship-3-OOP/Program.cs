@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,6 +52,20 @@ namespace Internship_3_OOP
                         }
                         
                         break;
+
+                    case 3:
+                        while (true)
+                        {
+                            DeleteContact(dictionary);
+                            if (BackToMenu() == 0)
+                            {
+                                Console.Clear();
+                                actionChoice = Menu();
+                                break;
+                            }
+                        }
+                        break;
+
                     /*
                     case 7:
                         Environment.Exit(0);    //Odkomentirati kasnije
@@ -60,6 +75,41 @@ namespace Internship_3_OOP
             }
 
             Console.ReadKey();
+        }
+        static void DeleteContact(Dictionary<Contact, List<Call>> dictionary)
+        {
+            Console.WriteLine();
+            var contactIsFound = false;
+            while (!contactIsFound)
+            {
+                Console.Write("Unesite ime i prezime kontakta koji želite izbrisati: ");
+                var contactForDeletion = Console.ReadLine();
+
+                Contact contactToRemove = dictionary.Keys.FirstOrDefault(contact => contact.NameAndSurname == contactForDeletion);
+
+                foreach (var key in dictionary.Keys)
+                {
+                    if (key.NameAndSurname == contactForDeletion)
+                    {
+                        contactIsFound = true;
+                        break;
+                    }
+                }
+
+                if (contactToRemove != null)
+                {
+                    dictionary.Remove(contactToRemove);
+                    contactIsFound = true;
+                    Console.WriteLine("Uspješno ste izbrisali kontakt " + contactForDeletion);
+                }
+                else
+                {
+                    Console.WriteLine("Kontakt nije pronađen!");
+                }
+                Console.WriteLine();
+            }
+
+
         }
 
         static int BackToMenu()
@@ -77,6 +127,7 @@ namespace Internship_3_OOP
 
         static void AddNewContact(Dictionary<Contact, List<Call>> dictionary)
         {
+            Console.WriteLine();
             string nameAndSurname = null, preference = null;
             string phoneNumber = null;
             
