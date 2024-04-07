@@ -1,6 +1,6 @@
 # OOP - Phone Book Console App
 
-3nd homework for DUMP Internship
+3rd homework for DUMP Internship
 
 ## Description
 
